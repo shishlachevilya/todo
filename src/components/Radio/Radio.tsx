@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './redio.scss';
 
 interface IRadio {
@@ -7,7 +7,6 @@ interface IRadio {
 }
 
 const Radio: React.FC<IRadio> = ({bgColor, isChecked}) => {
-  const [check, setCheck] = useState(isChecked);
 
   return (
     <div className='radio'>
@@ -15,9 +14,8 @@ const Radio: React.FC<IRadio> = ({bgColor, isChecked}) => {
         <input
           type='radio'
           name='color'
-          onChange={() => setCheck(!check)}
           value={bgColor}
-          checked={check}
+          defaultChecked={isChecked}
         />
         <span style={{backgroundColor: bgColor}}/>
       </label>

@@ -1,5 +1,6 @@
 .app {
   height: 100vh;
+  min-height: 600px;
 
   &__sidebar {
     position: relative;
@@ -19,37 +20,19 @@
   background-color: #ffffff;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
   border-radius: 10px;
-}
 
-.form {
-  &__field {
-    height: 32px;
-    width: 100%;
-    background-color: #ffffff;
-    border: 1px solid #eee;
-    border-radius: 4px;
-  }
-
-  &__group {
+  &__close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    margin: 16px 0;
-    font-size: 0;
-  }
-
-  &__radio {
-    width: 20px;
-    height: 20px;
-    margin: 0;
-  }
-
-  &__btn {
-    display: block;
-    width: 100%;
-    height: 40px;
-    background-color: #4dd599;
-    border-radius: 4px;
+    padding: 0;
+    height: 28px;
+    width: 28px;
+    background-color: #ccc;
+    border-radius: 50%;
     border: none;
     cursor: pointer;
   }

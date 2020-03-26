@@ -1,0 +1,22 @@
+.radio {
+  input[type='radio'] {
+    position: absolute;
+    clip: rect(0 0 0 0);
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+  }
+
+  span {
+    display: inline-flex;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  input[type='radio']:checked + span {
+    border-color: #000;
+  }
+}

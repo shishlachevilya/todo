@@ -1,51 +1,43 @@
 import React from 'react';
 import Icon from '../Icon';
 import './list.scss';
+import classNames from 'classnames';
 
-type IItem = {
-  color?: string
+type ItemType = {
+  icon: {
+    path: string
+    color: string
+  }
   title: string
   active: boolean
 }
 
 interface IList {
-  items: Array<IItem>
+  items: Array<ItemType>
+  clickHandler: () => void
 }
 
-const List:React.FC<IList> = ({items}) => {
-
-  const renderMenuIcon = (color: string) => {
-    return (
-      <Icon
-        viewBox='0 0 148 133'
-        color={color}
-        path='M29.5555 14.7773C29.5555 22.9395 22.9393 29.5557 14.7778 29.5557C6.61621 29.5557 0 22.9395 0 14.7773C0 6.61621 6.61621 0 14.7778 0C22.9393 0 29.5555 6.61621 29.5555 14.7773ZM29.5555 66.5C29.5555 74.6611 22.9393 81.2773 14.7778 81.2773C6.61621 81.2773 0 74.6611 0 66.5C0 58.3389 6.61621 51.7227 14.7778 51.7227C22.9393 51.7227 29.5555 58.3389 29.5555 66.5ZM14.7778 133C22.9393 133 29.5555 126.384 29.5555 118.223C29.5555 110.061 22.9393 103.444 14.7778 103.444C6.61621 103.444 0 110.061 0 118.223C0 126.384 6.61621 133 14.7778 133ZM140.389 22.167H59.1111C57.1515 22.167 55.2721 21.3887 53.8864 20.0029C52.5007 18.6172 51.7222 16.7373 51.7222 14.7773C51.7222 12.8184 52.5007 10.9385 53.8864 9.55273C55.2721 8.16699 57.1515 7.38867 59.1111 7.38867H140.389C142.349 7.38867 144.228 8.16699 145.614 9.55273C146.999 10.9385 147.778 12.8184 147.778 14.7773C147.778 16.7373 146.999 18.6172 145.614 20.0029C144.228 21.3887 142.349 22.167 140.389 22.167ZM140.389 59.1113H59.1111C57.1515 59.1113 55.2721 59.8896 53.8864 61.2754C52.5007 62.6611 51.7222 64.54 51.7222 66.5C51.7222 68.46 52.5007 70.3389 53.8864 71.7246C55.2721 73.1104 57.1515 73.8887 59.1111 73.8887H140.389C142.349 73.8887 144.228 73.1104 145.614 71.7246C146.999 70.3389 147.778 68.46 147.778 66.5C147.778 64.54 146.999 62.6611 145.614 61.2754C144.228 59.8896 142.349 59.1113 140.389 59.1113ZM59.1111 110.833H140.389C142.349 110.833 144.228 111.611 145.614 112.997C146.999 114.383 147.778 116.263 147.778 118.223C147.778 120.182 146.999 122.062 145.614 123.447C144.228 124.833 142.349 125.611 140.389 125.611H59.1111C57.1515 125.611 55.2721 124.833 53.8864 123.447C52.5007 122.062 51.7222 120.182 51.7222 118.223C51.7222 116.263 52.5007 114.383 53.8864 112.997C55.2721 111.611 57.1515 110.833 59.1111 110.833Z'
-      />
-    )
-  };
-
-  const renderCircleIcon = (color: string) => {
-    return (
-      <Icon
-        viewBox='0 0 70 70'
-        color={color}
-        path='M35 0C15.67 0 0 15.6703 0 35C0 54.3299 15.67 70 35 70C54.3299 70 70 54.3299 70 35C70 15.6703 54.33 0 35 0V0Z'
-      />
-    )
-  };
+const List:React.FC<IList> = ({items, clickHandler}) => {
 
   return (
     <ul className='list'>
       {items.map((item, index) => {
+        const {title, active, icon: {path, color}} = item;
+
         return (
           <li
             key={index}
-            className={`list__item item ${item.active ? 'active': ''}`}
+            className={classNames('list__item item', {active: active})}
+            onClick={clickHandler}
           >
             <div className="item__icon">
-              {item.color ? renderCircleIcon(item.color) : renderMenuIcon('#222')}
+              <Icon
+                viewBox='0 0 70 70'
+                color={color}
+                path={path}
+              />
             </div>
-            <span className='item__title'>{item.title}</span>
+            <span className='item__title'>{title}</span>
           </li>
         )
       })}

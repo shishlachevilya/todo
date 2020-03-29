@@ -12,7 +12,6 @@ interface IList {
 }
 
 const List: React.FC<IList> = ({items, clickHandler, isRemovable,clickRemoveHandler}) => {
-
   return (
     <ul className='list'>
       {items.map((item, index) => {

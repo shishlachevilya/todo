@@ -1,0 +1,37 @@
+.task {
+  &__title {
+    display: flex;
+    align-items: flex-end;
+    margin: 0 0 50px;
+
+    h1 {
+      margin: 0 20px 0 0;
+      font-size: 50px;
+      color: #64C4ED;
+      font-family: inherit;
+      font-weight: 700;
+    }
+  }
+
+  &__edit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #4DD599;
+
+      svg {
+        fill: #4DD599;
+      }
+    }
+  }
+}

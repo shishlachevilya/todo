@@ -7,7 +7,8 @@
         "color": "#42B883"
       },
       "title": "Покупки",
-      "active": false
+      "active": false,
+      "tasks": []
     },
     {
       "id": "7oet_d9Z",
@@ -16,7 +17,33 @@
         "color": "#64C4ED"
       },
       "title": "Фронтенд",
-      "active": false
+      "active": false,
+      "tasks": [
+        {
+          "id": "1",
+          "itemId": "7oet_d9Z",
+          "text": "Изучить JavaScript",
+          "completed": true
+        },
+        {
+          "id": "2",
+          "itemId": "7oet_d9Z",
+          "text": "Изучить паттерны проектирования",
+          "completed": false
+        },
+        {
+          "id": "3",
+          "itemId": "7oet_d9Z",
+          "text": "ReactJS Hooks (useState, useReducer, useEffect и т.д.)",
+          "completed": true
+        },
+        {
+          "id": "4",
+          "itemId": "7oet_d9Z",
+          "text": "Redux (redux-observable, redux-saga)",
+          "completed": false
+        }
+      ]
     },
     {
       "id": "2WEKaVNO",
@@ -25,7 +52,21 @@
         "color": "#FFBBCC"
       },
       "title": "Фильмы и сериалы",
-      "active": false
+      "active": false,
+      "tasks": [
+        {
+          "id": "5",
+          "itemId": "2WEKaVNO",
+          "text": "Отряд особого назначения",
+          "completed": true
+        },
+        {
+          "id": "6",
+          "itemId": "2WEKaVNO",
+          "text": "Джентельмены",
+          "completed": false
+        }
+      ]
     },
     {
       "id": "dBvJIh-H",
@@ -34,7 +75,8 @@
         "color": "#B6E6BD"
       },
       "title": "Книги",
-      "active": false
+      "active": false,
+      "tasks": []
     },
     {
       "id": "46Juzcyx",
@@ -43,7 +85,8 @@
         "color": "#C9D1D3"
       },
       "title": "Личное",
-      "active": false
+      "active": false,
+      "tasks": []
     }
   ],
   "itemAll": [

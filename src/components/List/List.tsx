@@ -7,7 +7,7 @@ import './list.scss';
 interface IList {
   items: Array<ItemType>
   clickHandler: () => void
-  clickRemoveHandler?:() => void
+  clickRemoveHandler?:(id: string) => void
   isRemovable?: boolean
 }
 
@@ -36,7 +36,7 @@ const List: React.FC<IList> = ({items, clickHandler, isRemovable,clickRemoveHand
             {isRemovable && (
               <button
                 className='item__close'
-                onClick={clickRemoveHandler}
+                onClick={() => clickRemoveHandler ? clickRemoveHandler(id) : null}
               >
                 <Icon
                   viewBox='0 0 15 15'

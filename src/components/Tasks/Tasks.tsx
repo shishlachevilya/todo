@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../Icon';
 import './task.scss';
+import Checkbox from '../Checkbox';
 import {ItemType} from '../App/App';
 
 interface ITask {
@@ -8,13 +9,12 @@ interface ITask {
 }
 
 const Tasks: React.FC<ITask> = ({task}) => {
-
-  console.log(task);
+  const {title, tasks} = task;
 
   return (
     <div className='task'>
       <div className="task__title">
-        <h1>{task ? task.title : ''}</h1>
+        <h1>{title}</h1>
         <button className='task__edit'>
           <Icon
             viewBox='0 0 15 15'
@@ -23,14 +23,21 @@ const Tasks: React.FC<ITask> = ({task}) => {
           />
         </button>
       </div>
-      
-      <div className='checkbox'>
-        <label>
-          <input type='checkbox'/>
-          <span></span>
-          Изучить JavaScript
-        </label>
-      </div>
+
+      <ul className='task-list'>
+        {tasks.map(({id, text, completed}) => {
+          return (
+            <li key={id} className="task-list__item">
+              <Checkbox
+                text={text}
+                completed={completed}
+              />
+            </li>
+          )
+        })}
+      </ul>
+
+
     </div>
   );
 };

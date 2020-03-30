@@ -32,6 +32,17 @@
 
   &__title {
     flex-grow: 1;
+    margin: 0;
+    width: 100%;
+    padding-right: 6px;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    span {
+      margin-left: 6px;
+    }
   }
 
   &__close {

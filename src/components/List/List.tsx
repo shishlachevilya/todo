@@ -6,12 +6,12 @@ import './list.scss';
 
 interface IList {
   items: Array<ItemType>
-  clickHandler: () => void
-  clickRemoveHandler?:(id: string) => void
+  clickHandler: (item: ItemType) => void
+  clickRemoveHandler?: (id: string) => void
   isRemovable?: boolean
 }
 
-const List: React.FC<IList> = ({items, clickHandler, isRemovable,clickRemoveHandler}) => {
+const List: React.FC<IList> = ({items, clickHandler, isRemovable, clickRemoveHandler}) => {
   return (
     <ul className='list'>
       {items.map((item, index) => {
@@ -22,7 +22,7 @@ const List: React.FC<IList> = ({items, clickHandler, isRemovable,clickRemoveHand
             id={id}
             key={index}
             className={classNames('list__item item', {active: active})}
-            onClick={clickHandler}
+            onClick={() => clickHandler ? clickHandler(item) : null}
           >
             <div className="item__icon">
               <Icon
@@ -31,7 +31,11 @@ const List: React.FC<IList> = ({items, clickHandler, isRemovable,clickRemoveHand
                 path={path}
               />
             </div>
-            <span className='item__title'>{title}</span>
+            <h4 className='item__title'>
+              {title}
+
+              <span>{item.tasks && `(${item.tasks.length})`}</span>
+            </h4>
 
             {isRemovable && (
               <button

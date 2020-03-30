@@ -6,26 +6,31 @@ import Tasks from '../Tasks';
 import axios from 'axios';
 import './app.scss';
 
+type TaskType = {
+  id: string
+  itemId: string
+  text: string
+  completed: boolean
+}
+
+type IconType = {
+  path: string
+  color: string
+}
+
 export type ItemType = {
   id: string
   title: string
   active: boolean
-  icon: {
-    path: string
-    color: string
-  }
-  tasks: {
-    id: string
-    itemId: string
-    text: string
-    completed: boolean
-  }
+  icon: IconType
+  tasks: Array<TaskType>
 }
 
 interface IApp {
   items: Array<ItemType>
   itemAll: Array<ItemType>
   itemAdd: Array<ItemType>
+  currentTask: ItemType
   isLoading: boolean
   isVisible: boolean
 }
@@ -36,6 +41,7 @@ class App extends Component<{}, IApp> {
     items: [],
     itemAll: [],
     itemAdd: [],
+    currentTask: {},
     isLoading: true,
     isVisible: false
   };
@@ -57,8 +63,12 @@ class App extends Component<{}, IApp> {
     console.log('handlerOne');
   };
 
-  handlerTwo = () => {
-    console.log('handlerTwo');
+  handlerTwo = (item: ItemType) => {
+    this.setState(() => {
+      return {
+        currentTask: item
+      }
+    })
   };
 
   handlerTree = () => {
@@ -128,7 +138,8 @@ class App extends Component<{}, IApp> {
   };
 
   render() {
-    const {items, isVisible, isLoading, itemAll, itemAdd} = this.state;
+    const {items, isVisible, isLoading, itemAll, itemAdd, currentTask} = this.state;
+    console.log(currentTask);
 
     return (
       <div className='app'>
@@ -170,7 +181,7 @@ class App extends Component<{}, IApp> {
         </div>
 
         <div className='app__content'>
-          {items && <Tasks task={items[1]}/>}
+          {Object.keys(currentTask).length > 0 && <Tasks task={currentTask}/>}
         </div>
       </div>
     );

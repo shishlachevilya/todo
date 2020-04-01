@@ -30,7 +30,7 @@ interface IApp {
   items: Array<ItemType>
   itemAll: Array<ItemType>
   itemAdd: Array<ItemType>
-  currentTask: ItemType
+  currentTask?: ItemType
   isLoading: boolean
   isVisible: boolean
 }
@@ -41,7 +41,7 @@ class App extends Component<{}, IApp> {
     items: [],
     itemAll: [],
     itemAdd: [],
-    currentTask: {},
+    currentTask: undefined,
     isLoading: true,
     isVisible: false
   };
@@ -114,6 +114,7 @@ class App extends Component<{}, IApp> {
         color: obj.color,
       },
       title: obj.value,
+      tasks: [],
       active: false
     })
       .then(({data}) => {
@@ -137,9 +138,23 @@ class App extends Component<{}, IApp> {
       });
   };
 
+  onChangeTitle = (title: string, itemId: string) => {
+    const newItems = this.state.items.filter((item: ItemType) => {
+      if(item.id === itemId) {
+        item.title = title;
+      }
+      return item;
+    });
+
+    this.setState(() => {
+      return {
+        items: newItems
+      }
+    })
+  };
+
   render() {
     const {items, isVisible, isLoading, itemAll, itemAdd, currentTask} = this.state;
-    console.log(currentTask);
 
     return (
       <div className='app'>
@@ -181,7 +196,7 @@ class App extends Component<{}, IApp> {
         </div>
 
         <div className='app__content'>
-          {Object.keys(currentTask).length > 0 && <Tasks task={currentTask}/>}
+          {currentTask ? <Tasks onChangeTitle={this.onChangeTitle} task={currentTask}/> : 'выбери задачу'}
         </div>
       </div>
     );

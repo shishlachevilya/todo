@@ -5,17 +5,45 @@ import Checkbox from '../Checkbox';
 import {ItemType} from '../App/App';
 
 interface ITask {
-  task: ItemType
+  task?: ItemType
+  onChangeTitle: (title: string, id: string) => void
 }
 
-const Tasks: React.FC<ITask> = ({task}) => {
+const Tasks: React.FC<ITask> = ({task, onChangeTitle}) => {
+  if(!task) return (<div></div>);
+
+
   const {title, tasks} = task;
+
+  const renderTasks = () => {
+    return tasks.map(({id, text, completed}) => {
+      return (
+        <li key={id} className="task-list__item">
+          <Checkbox
+            text={text}
+            completed={completed}
+          />
+        </li>
+      )
+    })
+  };
+
+  const clickHandler = () => {
+    const newTitle = prompt('Новый заголовок', title);
+
+    if(newTitle) {
+      onChangeTitle(newTitle, task.id);
+    }
+  };
 
   return (
     <div className='task'>
       <div className="task__title">
         <h1>{title}</h1>
-        <button className='task__edit'>
+        <button
+          onClick={clickHandler}
+          className='task__edit'
+        >
           <Icon
             viewBox='0 0 15 15'
             color='#dfdfdf'
@@ -25,19 +53,8 @@ const Tasks: React.FC<ITask> = ({task}) => {
       </div>
 
       <ul className='task-list'>
-        {tasks.map(({id, text, completed}) => {
-          return (
-            <li key={id} className="task-list__item">
-              <Checkbox
-                text={text}
-                completed={completed}
-              />
-            </li>
-          )
-        })}
+        {tasks.length > 0 ? renderTasks() : 'нет задач'}
       </ul>
-
-
     </div>
   );
 };

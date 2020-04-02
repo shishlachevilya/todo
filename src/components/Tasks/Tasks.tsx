@@ -1,19 +1,31 @@
 import React from 'react';
 import Icon from '../Icon';
-import './task.scss';
 import Checkbox from '../Checkbox';
-import {ItemType} from '../App/App';
+import {ItemType, TaskType} from '../App/App';
+import NewTask from "../NewTask";
+import './task.scss';
+
+import axios from 'axios';
 
 interface ITask {
   task?: ItemType
   onChangeTitle: (title: string, id: string) => void
+  onToggleShowForm: () => void
+  onAddNewTask: (id:string, obj: TaskType) => void
+  isShow: boolean
 }
 
-const Tasks: React.FC<ITask> = ({task, onChangeTitle}) => {
-  if(!task) return (<div></div>);
-
+const Tasks: React.FC<ITask> = ({
+                                  task,
+                                  onChangeTitle,
+                                  onToggleShowForm,
+                                  onAddNewTask,
+                                  isShow
+                                }) => {
+  if (!task) return (<div></div>);
 
   const {title, tasks} = task;
+
 
   const renderTasks = () => {
     return tasks.map(({id, text, completed}) => {
@@ -31,8 +43,11 @@ const Tasks: React.FC<ITask> = ({task, onChangeTitle}) => {
   const clickHandler = () => {
     const newTitle = prompt('Новый заголовок', title);
 
-    if(newTitle) {
+    if (newTitle) {
       onChangeTitle(newTitle, task.id);
+      axios.patch(`http://localhost:3001/items/${task.id}`, {
+        title: newTitle
+      }).catch(() => alert('Произошла ошибка!'));
     }
   };
 
@@ -55,6 +70,13 @@ const Tasks: React.FC<ITask> = ({task, onChangeTitle}) => {
       <ul className='task-list'>
         {tasks.length > 0 ? renderTasks() : 'нет задач'}
       </ul>
+
+      <NewTask
+        onToggleShowForm={onToggleShowForm}
+        onAddNewTask={onAddNewTask}
+        task={task}
+        isShow={isShow}
+      />
     </div>
   );
 };

@@ -47,7 +47,7 @@ const Form: React.FC<IForm> = ({ onSubmitHandler, isLoading }) => {
       <input
         className='form__field'
         type='text'
-        onChange={ (e: ChangeEvent<HTMLInputElement>) => setFieldValue(e.target.value) }
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setFieldValue(e.target.value) }
         value={ fieldValue }
         placeholder='Название задачи'/>
 

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import List from '../List';
-import Form from '../Form';
-import Icon from '../Icon';
 import Tasks from '../Tasks';
-import axios from 'axios';
+import Popup from "../Popup";
 import './app.scss';
 
-type TaskType = {
+import axios from 'axios';
+
+export type TaskType = {
   id: string
   itemId: string
   text: string
@@ -33,6 +33,7 @@ interface IApp {
   currentTask?: ItemType
   isLoading: boolean
   isVisible: boolean
+  isShow: boolean
 }
 
 class App extends Component<{}, IApp> {
@@ -43,20 +44,21 @@ class App extends Component<{}, IApp> {
     itemAdd: [],
     currentTask: undefined,
     isLoading: true,
-    isVisible: false
+    isVisible: false,
+    isShow: false
   };
 
   componentDidMount() {
     axios.get('http://localhost:3001/db')
-      .then(({data}: any) => {
-        this.setState(() => {
-          return {
-            items: data.items,
-            itemAll: data.itemAll,
-            itemAdd: data.itemAdd
-          }
-        })
-      });
+    .then(({data}: any) => {
+      this.setState(() => {
+        return {
+          items: data.items,
+          itemAll: data.itemAll,
+          itemAdd: data.itemAdd
+        }
+      })
+    });
   }
 
   handlerOne = () => {
@@ -71,37 +73,25 @@ class App extends Component<{}, IApp> {
     })
   };
 
-  handlerTree = () => {
-    this.setState(() => {
-      return {
-        isVisible: true
-      }
-    })
-  };
-
   removeTask = (id: string) => {
     if (window.confirm('Удалить задачу?')) {
-      axios.delete('http://localhost:3001/items/' + id)
-        .then(() => {
-          const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
-          this.setState(() => {
-            return {
-              items: filteredItems
-            }
-          })
+      axios.delete(`http://localhost:3001/items/${id}`)
+      .then(() => {
+        const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
+        this.setState(() => {
+          return {
+            items: filteredItems
+          }
         })
+      })
     }
   };
 
-  closePopup = () => {
-    this.setState(() => {
-      return {
-        isVisible: false
-      }
-    })
+  onTogglePopup = () => {
+    this.setState({isVisible: !this.state.isVisible})
   };
 
-  onSubmitHandler = (obj: {value: string, color: string}) => {
+  onSubmitHandler = (obj: { value: string, color: string }) => {
     this.setState(() => {
       return {
         isLoading: false
@@ -117,30 +107,31 @@ class App extends Component<{}, IApp> {
       tasks: [],
       active: false
     })
-      .then(({data}) => {
-        const newItems = [
-          ...this.state.items,
-          data
-        ];
+    .then(({data}) => {
+      const newItems = [
+        ...this.state.items,
+        data
+      ];
 
-        this.setState(() => {
-          return {
-            items: newItems
-          }
-        });
-      })
-      .finally(() => {
-        this.setState(() => {
-          return {
-            isLoading: true
-          }
-        });
+      this.setState(() => {
+        return {
+          items: newItems
+        }
       });
+    })
+    .catch(() => alert('Произошла ошибка'))
+    .finally(() => {
+      this.setState(() => {
+        return {
+          isLoading: true
+        }
+      });
+    });
   };
 
   onChangeTitle = (title: string, itemId: string) => {
     const newItems = this.state.items.filter((item: ItemType) => {
-      if(item.id === itemId) {
+      if (item.id === itemId) {
         item.title = title;
       }
       return item;
@@ -153,8 +144,24 @@ class App extends Component<{}, IApp> {
     })
   };
 
+  onToggleShowForm = () => {
+    this.setState({isShow: !this.state.isShow})
+  };
+
+  onAddNewTask = (id: string, obj: TaskType) => {
+    const newList = this.state.items.map((item: ItemType) => {
+      if (item.id === obj.itemId) {
+        item.tasks = [...item.tasks, obj];
+      }
+
+      return item;
+    });
+
+    this.setState({items: newList});
+  };
+
   render() {
-    const {items, isVisible, isLoading, itemAll, itemAdd, currentTask} = this.state;
+    const {items, isVisible, isLoading, itemAll, itemAdd, currentTask, isShow} = this.state;
 
     return (
       <div className='app'>
@@ -167,36 +174,34 @@ class App extends Component<{}, IApp> {
           <List
             clickHandler={this.handlerTwo}
             clickRemoveHandler={this.removeTask}
+            activeItem={currentTask}
             items={items}
             isRemovable
           />
 
           <List
-            clickHandler={this.handlerTree}
+            clickHandler={this.onTogglePopup}
             items={itemAdd}
           />
 
-          {isVisible && (
-            <div className='popup'>
-              <button
-                className='popup__close'
-                onClick={this.closePopup}
-              >
-                <Icon
-                  viewBox='0 0 15 15'
-                  color='#000'
-                  path='M8.75256 7.87207L13.7404 12.8599C14.2065 13.326 14.2065 14.0563 13.7404 14.5225C13.2742 14.9886 12.5439 14.9886 12.0778 14.5225L7.08997 9.53467L2.10217 14.5225C1.63603 14.9886 0.905726 14.9886 0.439577 14.5225C-0.0265714 14.0563 -0.0265714 13.326 0.439577 12.8599L5.42737 7.87207L0.439577 2.88428C-0.0265714 2.41813 -0.0265714 1.68783 0.439577 1.22168C0.905726 0.755533 1.63603 0.755533 2.10217 1.22168L7.08997 6.20947L12.0778 1.22168C12.5439 0.755533 13.2742 0.755533 13.7404 1.22168C14.2065 1.68783 14.2065 2.41813 13.7404 2.88428L8.75256 7.87207Z'/>
-              </button>
-
-              <Form
-                onSubmitHandler={this.onSubmitHandler}
-                isLoading={isLoading}
-              />
-            </div>)}
+          {isVisible && <Popup
+            isLoading={isLoading}
+            closePopup={this.onTogglePopup}
+            onSubmitHandler={this.onSubmitHandler}
+          />}
         </div>
 
         <div className='app__content'>
-          {currentTask ? <Tasks onChangeTitle={this.onChangeTitle} task={currentTask}/> : 'выбери задачу'}
+          {currentTask ?
+            <Tasks
+              onChangeTitle={this.onChangeTitle}
+              onToggleShowForm={this.onToggleShowForm}
+              onAddNewTask={this.onAddNewTask}
+              task={currentTask}
+              isShow={isShow}
+            />
+            :
+            'выбери задачу'}
         </div>
       </div>
     );

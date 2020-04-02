@@ -1,27 +1,34 @@
 import React from 'react';
 import Icon from '../Icon';
-import classNames from 'classnames';
 import {ItemType} from '../App/App';
 import './list.scss';
 
+import classNames from 'classnames';
+
 interface IList {
   items: Array<ItemType>
+  activeItem?: ItemType
   clickHandler: (item: ItemType) => void
   clickRemoveHandler?: (id: string) => void
   isRemovable?: boolean
 }
 
-const List: React.FC<IList> = ({items, clickHandler, isRemovable, clickRemoveHandler}) => {
+const List: React.FC<IList> = ({
+                                 items,
+                                 activeItem,
+                                 clickHandler,
+                                 clickRemoveHandler,
+                                 isRemovable
+                               }) => {
   return (
     <ul className='list'>
       {items.map((item, index) => {
-        const {id, title, active, icon: {path, color}} = item;
-
+        const {id, title, icon: {path, color}} = item;
         return (
           <li
             id={id}
             key={index}
-            className={classNames('list__item item', {active: active})}
+            className={classNames('list__item item', {active: activeItem && activeItem.id === id})}
             onClick={() => clickHandler ? clickHandler(item) : null}
           >
             <div className="item__icon">

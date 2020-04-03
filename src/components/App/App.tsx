@@ -192,9 +192,10 @@ class App extends Component<{}, IApp> {
 
         <div className='app__content'>
           <Route exact path='/'>
-            {items && items.map((item) => {
+            {items && items.map((item, index) => {
               return (
                 <Tasks
+                  key={index}
                   onChangeTitle={this.onChangeTitle}
                   onAddNewTask={this.onAddNewTask}
                   task={item}

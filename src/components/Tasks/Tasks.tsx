@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Icon from '../Icon';
 import Checkbox from '../Checkbox';
 import {ItemType, TaskType} from '../App/App';

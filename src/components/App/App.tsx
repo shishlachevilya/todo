@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import List from '../List';
 import Tasks from '../Tasks';
-import Popup from "../Popup";
+import Popup from '../Popup';
+import {Route} from 'react-router-dom';
+
 import './app.scss';
 
 import axios from 'axios';
@@ -33,7 +35,6 @@ interface IApp {
   currentTask?: ItemType
   isLoading: boolean
   isVisible: boolean
-  isShow: boolean
 }
 
 class App extends Component<{}, IApp> {
@@ -44,8 +45,7 @@ class App extends Component<{}, IApp> {
     itemAdd: [],
     currentTask: undefined,
     isLoading: true,
-    isVisible: false,
-    isShow: false
+    isVisible: false
   };
 
   componentDidMount() {
@@ -144,10 +144,6 @@ class App extends Component<{}, IApp> {
     })
   };
 
-  onToggleShowForm = () => {
-    this.setState({isShow: !this.state.isShow})
-  };
-
   onAddNewTask = (id: string, obj: TaskType) => {
     const newList = this.state.items.map((item: ItemType) => {
       if (item.id === obj.itemId) {
@@ -157,11 +153,14 @@ class App extends Component<{}, IApp> {
       return item;
     });
 
+    axios.patch(`http://localhost:3001/items/${id}`, this.state.currentTask)
+    .catch(() => alert('Произошла ошибка!'));
+
     this.setState({items: newList});
   };
 
   render() {
-    const {items, isVisible, isLoading, itemAll, itemAdd, currentTask, isShow} = this.state;
+    const {items, isVisible, isLoading, itemAll, itemAdd, currentTask} = this.state;
 
     return (
       <div className='app'>
@@ -192,16 +191,27 @@ class App extends Component<{}, IApp> {
         </div>
 
         <div className='app__content'>
-          {currentTask ?
-            <Tasks
-              onChangeTitle={this.onChangeTitle}
-              onToggleShowForm={this.onToggleShowForm}
-              onAddNewTask={this.onAddNewTask}
-              task={currentTask}
-              isShow={isShow}
-            />
-            :
-            'выбери задачу'}
+          <Route exact path='/'>
+            {items && items.map((item) => {
+              return (
+                <Tasks
+                  onChangeTitle={this.onChangeTitle}
+                  onAddNewTask={this.onAddNewTask}
+                  task={item}
+                />
+              )
+            })}
+          </Route>
+          {/*{currentTask ?*/}
+          {/*  <Tasks*/}
+          {/*    onChangeTitle={this.onChangeTitle}*/}
+          {/*    onToggleShowForm={this.onToggleShowForm}*/}
+          {/*    onAddNewTask={this.onAddNewTask}*/}
+          {/*    task={currentTask}*/}
+          {/*    isShow={isShow}*/}
+          {/*  />*/}
+          {/*  :*/}
+          {/*  'выбери задачу'}*/}
         </div>
       </div>
     );

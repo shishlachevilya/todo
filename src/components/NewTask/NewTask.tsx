@@ -1,28 +1,29 @@
 import React, {ChangeEvent, useState} from 'react';
-import './new-task.scss';
 import Icon from '../Icon';
 import {ItemType, TaskType} from '../App/App';
+import './new-task.scss';
+
+import shortId from 'shortid';
 
 interface INewTask {
   task: ItemType
-  onToggleShowForm: () => void
   onAddNewTask: (id: string, newTask: TaskType) => void
-  isShow: boolean
 }
 
-const NewTask: React.FC<INewTask> = ({
-                                       task,
-                                       onAddNewTask,
-                                       onToggleShowForm,
-                                       isShow
-                                     }) => {
+const NewTask: React.FC<INewTask> = ({task, onAddNewTask}) => {
   const [inputValue, setInputValue] = useState('');
+  const [isShow, setIsShow] = useState(false);
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
 
+    if (!inputValue) {
+      alert('Введите название задачи!!!');
+      return
+    }
+
     const newTask = {
-      id: Date.now().toString(),
+      id: shortId.generate(),
       itemId: task.id,
       text: inputValue,
       completed: false
@@ -47,11 +48,11 @@ const NewTask: React.FC<INewTask> = ({
             />
 
             <button className='form__btn form__btn_half' type='submit'>Добавить задачу</button>
-            <button onClick={onToggleShowForm} className='form__btn form__btn_close'>Отмена</button>
+            <button onClick={() => setIsShow(!isShow)} className='form__btn form__btn_close'>Закрыть</button>
           </form>
         ) :
         (
-          <div className='new-task-btn' onClick={onToggleShowForm}>
+          <div className='new-task-btn' onClick={() => setIsShow(!isShow)}>
             <div className='new-task__icon'>
               <Icon
                 viewBox='0 0 70 70'

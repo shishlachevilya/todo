@@ -4,7 +4,6 @@ import axios from 'axios';
 
 import './form.scss';
 
-
 interface IForm {
   onSubmitHandler: (obj: { value: string, color: string }) => void
   isLoading: boolean

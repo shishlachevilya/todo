@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from '../Icon';
 import Checkbox from '../Checkbox';
 import {ItemType, TaskType} from '../App/App';
@@ -10,22 +10,13 @@ import axios from 'axios';
 interface ITask {
   task?: ItemType
   onChangeTitle: (title: string, id: string) => void
-  onToggleShowForm: () => void
-  onAddNewTask: (id:string, obj: TaskType) => void
-  isShow: boolean
+  onAddNewTask: (id: string, obj: TaskType) => void
 }
 
-const Tasks: React.FC<ITask> = ({
-                                  task,
-                                  onChangeTitle,
-                                  onToggleShowForm,
-                                  onAddNewTask,
-                                  isShow
-                                }) => {
+const Tasks: React.FC<ITask> = ({task, onChangeTitle, onAddNewTask}) => {
   if (!task) return (<div></div>);
 
-  const {title, tasks} = task;
-
+  const {title, tasks, icon: {color}} = task;
 
   const renderTasks = () => {
     return tasks.map(({id, text, completed}) => {
@@ -54,7 +45,7 @@ const Tasks: React.FC<ITask> = ({
   return (
     <div className='task'>
       <div className="task__title">
-        <h1>{title}</h1>
+        <h1 style={{color: color}}>{title}</h1>
         <button
           onClick={clickHandler}
           className='task__edit'
@@ -72,10 +63,8 @@ const Tasks: React.FC<ITask> = ({
       </ul>
 
       <NewTask
-        onToggleShowForm={onToggleShowForm}
         onAddNewTask={onAddNewTask}
         task={task}
-        isShow={isShow}
       />
     </div>
   );

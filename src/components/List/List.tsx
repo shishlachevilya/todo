@@ -28,7 +28,7 @@ const List: React.FC<IList> = ({
           <li
             id={id}
             key={index}
-            className={classNames('list__item item', {active: activeItem && activeItem.id === id})}
+            className={classNames('list__item item', {active: item.active ? item.active : activeItem && activeItem.id === id})}
             onClick={() => clickHandler ? clickHandler(item) : null}
           >
             <div className="item__icon">

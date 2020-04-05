@@ -1,12 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import List from '../List';
 import Tasks from '../Tasks';
 import Popup from '../Popup';
-import {Route} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import './app.scss';
 
 import axios from 'axios';
+import Title from '../Title';
+import AddTask from '../AddTask';
 
 export type TaskType = {
   id: string
@@ -50,45 +52,44 @@ class App extends Component<{}, IApp> {
 
   componentDidMount() {
     axios.get('http://localhost:3001/db')
-    .then(({data}: any) => {
-      this.setState(() => {
-        return {
-          items: data.items,
-          itemAll: data.itemAll,
-          itemAdd: data.itemAdd
-        }
-      })
-    });
+      .then(({ data }: any) => {
+        this.setState(() => {
+          return {
+            items: data.items,
+            itemAll: data.itemAll,
+            itemAdd: data.itemAdd
+          }
+        })
+      });
   }
 
-  handlerOne = () => {
-    console.log('handlerOne');
-  };
-
-  handlerTwo = (item: ItemType) => {
-    this.setState(() => {
-      return {
-        currentTask: item
-      }
-    })
+  renderActiveItem = (id: string) => {
+    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
+    console.log(activeItem);
+    // if (this.state.items) {
+    //   // @ts-ignore
+    //   this.setState(() => {
+    //     return { items: activeItem }
+    //   })
+    // }
   };
 
   removeTask = (id: string) => {
     if (window.confirm('Удалить задачу?')) {
-      axios.delete(`http://localhost:3001/items/${id}`)
-      .then(() => {
-        const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
-        this.setState(() => {
-          return {
-            items: filteredItems
-          }
+      axios.delete(`http://localhost:3001/items/${ id }`)
+        .then(() => {
+          const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
+          this.setState(() => {
+            return {
+              items: filteredItems
+            }
+          })
         })
-      })
     }
   };
 
   onTogglePopup = () => {
-    this.setState({isVisible: !this.state.isVisible})
+    this.setState({ isVisible: !this.state.isVisible })
   };
 
   onSubmitHandler = (obj: { value: string, color: string }) => {
@@ -107,26 +108,26 @@ class App extends Component<{}, IApp> {
       tasks: [],
       active: false
     })
-    .then(({data}) => {
-      const newItems = [
-        ...this.state.items,
-        data
-      ];
+      .then(({ data }) => {
+        const newItems = [
+          ...this.state.items,
+          data
+        ];
 
-      this.setState(() => {
-        return {
-          items: newItems
-        }
+        this.setState(() => {
+          return {
+            items: newItems
+          }
+        });
+      })
+      .catch(() => alert('Произошла ошибка'))
+      .finally(() => {
+        this.setState(() => {
+          return {
+            isLoading: true
+          }
+        });
       });
-    })
-    .catch(() => alert('Произошла ошибка'))
-    .finally(() => {
-      this.setState(() => {
-        return {
-          isLoading: true
-        }
-      });
-    });
   };
 
   onChangeTitle = (title: string, itemId: string) => {
@@ -147,47 +148,42 @@ class App extends Component<{}, IApp> {
   onAddNewTask = (id: string, obj: TaskType) => {
     const newList = this.state.items.map((item: ItemType) => {
       if (item.id === obj.itemId) {
-        item.tasks = [...item.tasks, obj];
+        item.tasks = [ ...item.tasks, obj ];
       }
 
       return item;
     });
 
-    axios.patch(`http://localhost:3001/items/${id}`, this.state.currentTask)
-    .catch(() => alert('Произошла ошибка!'));
+    axios.patch(`http://localhost:3001/items/${ id }`, this.state.currentTask)
+      .catch(() => alert('Произошла ошибка!'));
 
-    this.setState({items: newList});
+    this.setState({ items: newList });
   };
 
   render() {
-    const {items, isVisible, isLoading, itemAll, itemAdd, currentTask} = this.state;
+    const { items, isVisible, isLoading, currentTask } = this.state;
 
     return (
       <div className='app'>
         <div className='app__sidebar'>
-          <List
-            clickHandler={this.handlerOne}
-            items={itemAll}
-          />
+          <Title/>
 
           <List
-            clickHandler={this.handlerTwo}
-            clickRemoveHandler={this.removeTask}
-            activeItem={currentTask}
-            items={items}
-            isRemovable
+            renderActiveItem={ this.renderActiveItem }
+            clickRemoveHandler={ this.removeTask }
+            activeItem={ currentTask }
+            items={ items }
           />
 
-          <List
-            clickHandler={this.onTogglePopup}
-            items={itemAdd}
+          <AddTask
+            clickHandler={ this.onTogglePopup }
           />
 
-          {isVisible && <Popup
-            isLoading={isLoading}
-            closePopup={this.onTogglePopup}
-            onSubmitHandler={this.onSubmitHandler}
-          />}
+          { isVisible && <Popup
+            isLoading={ isLoading }
+            closePopup={ this.onTogglePopup }
+            onSubmitHandler={ this.onSubmitHandler }
+          /> }
         </div>
 
         <div className='app__content'>
@@ -195,24 +191,24 @@ class App extends Component<{}, IApp> {
             {items && items.map((item, index) => {
               return (
                 <Tasks
-                  key={index}
-                  onChangeTitle={this.onChangeTitle}
-                  onAddNewTask={this.onAddNewTask}
-                  task={item}
+                  key={ index }
+                  onChangeTitle={ this.onChangeTitle }
+                  onAddNewTask={ this.onAddNewTask }
+                  task={ item }
                 />
               )
-            })}
+            }) }
           </Route>
-          {/*{currentTask ?*/}
-          {/*  <Tasks*/}
-          {/*    onChangeTitle={this.onChangeTitle}*/}
-          {/*    onToggleShowForm={this.onToggleShowForm}*/}
-          {/*    onAddNewTask={this.onAddNewTask}*/}
-          {/*    task={currentTask}*/}
-          {/*    isShow={isShow}*/}
-          {/*  />*/}
-          {/*  :*/}
-          {/*  'выбери задачу'}*/}
+          {/*{currentTask ?*/ }
+          {/*  <Tasks*/ }
+          {/*    onChangeTitle={this.onChangeTitle}*/ }
+          {/*    onToggleShowForm={this.onToggleShowForm}*/ }
+          {/*    onAddNewTask={this.onAddNewTask}*/ }
+          {/*    task={currentTask}*/ }
+          {/*    isShow={isShow}*/ }
+          {/*  />*/ }
+          {/*  :*/ }
+          {/*  'выбери задачу'}*/ }
         </div>
       </div>
     );

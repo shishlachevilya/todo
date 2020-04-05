@@ -9,7 +9,7 @@ import './list.scss';
 interface IList {
   items: Array<ItemType>
   activeItem?: ItemType
-  renderActiveItem: (id: string) => void
+  renderActiveItem: (path: string) => void
   clickRemoveHandler?: (id: string) => void
 }
 
@@ -24,7 +24,7 @@ const List: React.FC<IList> = ({
 
   const clickHandler = (id: string) => {
     history.push(`/task/${ id }`);
-    renderActiveItem(id);
+    renderActiveItem(history.location.pathname);
   };
 
   return (

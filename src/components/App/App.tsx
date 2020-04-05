@@ -32,8 +32,7 @@ export type ItemType = {
 
 interface IApp {
   items: Array<ItemType>
-  itemAll: Array<ItemType>
-  itemAdd: Array<ItemType>
+  path: string
   currentTask?: ItemType
   isLoading: boolean
   isVisible: boolean
@@ -43,8 +42,7 @@ class App extends Component<{}, IApp> {
 
   state = {
     items: [],
-    itemAll: [],
-    itemAdd: [],
+    path: '/',
     currentTask: undefined,
     isLoading: true,
     isVisible: false
@@ -55,23 +53,26 @@ class App extends Component<{}, IApp> {
       .then(({ data }: any) => {
         this.setState(() => {
           return {
-            items: data.items,
-            itemAll: data.itemAll,
-            itemAdd: data.itemAdd
+            items: data.items
           }
         })
       });
   }
 
-  renderActiveItem = (id: string) => {
-    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
-    console.log(activeItem);
-    // if (this.state.items) {
-    //   // @ts-ignore
-    //   this.setState(() => {
-    //     return { items: activeItem }
-    //   })
-    // }
+  componentDidUpdate(prevProps: {}, prevState: IApp) {
+    if (prevState.path !== this.state.path) {
+      const activeItem = this.state.items.find((item: ItemType) => item.id === this.state.path);
+
+      this.setState(() => {
+        return {
+          currentTask: activeItem
+        }
+      })
+    }
+  }
+
+  renderActiveItem = (path: string) => {
+    this.setState({ path: path.split('/task/')[1] });
   };
 
   removeTask = (id: string) => {
@@ -162,6 +163,7 @@ class App extends Component<{}, IApp> {
 
   render() {
     const { items, isVisible, isLoading, currentTask } = this.state;
+    console.log(currentTask);
 
     return (
       <div className='app'>
@@ -188,7 +190,7 @@ class App extends Component<{}, IApp> {
 
         <div className='app__content'>
           <Route exact path='/'>
-            {items && items.map((item, index) => {
+            { items && items.map((item, index) => {
               return (
                 <Tasks
                   key={ index }
@@ -198,6 +200,16 @@ class App extends Component<{}, IApp> {
                 />
               )
             }) }
+          </Route>
+
+          <Route exact path='/task/:id'>
+            { items && currentTask && (
+              <Tasks
+                onChangeTitle={ this.onChangeTitle }
+                onAddNewTask={ this.onAddNewTask }
+                task={ currentTask }
+              />
+            ) }
           </Route>
           {/*{currentTask ?*/ }
           {/*  <Tasks*/ }

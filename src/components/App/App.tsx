@@ -54,22 +54,12 @@ class App extends Component<{}, IApp> {
     });
   }
 
-  // componentDidUpdate(prevProps: {}, prevState: IApp) {
-  //   if(prevState.items !== this.state.items) {
-  //     console.log('update');
-  //   }
-  // }
-
-  removeTask = (id: string) => {
+  onRemoveTask = (id: string) => {
     if (window.confirm('Удалить задачу?')) {
       axios.delete(`http://localhost:3001/items/${id}`)
       .then(() => {
         const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
-        this.setState(() => {
-          return {
-            items: filteredItems
-          }
-        })
+        this.setState({items: filteredItems})
       })
     }
   };
@@ -79,11 +69,7 @@ class App extends Component<{}, IApp> {
   };
 
   onSubmitHandler = (obj: { value: string, color: string }) => {
-    this.setState(() => {
-      return {
-        isLoading: false
-      }
-    });
+    this.setState({isLoading: false});
 
     axios.post('http://localhost:3001/items', {
       icon: {
@@ -99,19 +85,13 @@ class App extends Component<{}, IApp> {
         data
       ];
 
-      this.setState(() => {
-        return {
-          items: newItems
-        }
-      });
+      this.setState( {items: newItems});
     })
-    .catch(() => alert('Произошла ошибка'))
+    .catch(() => {
+      alert('Произошла ошибка');
+    })
     .finally(() => {
-      this.setState(() => {
-        return {
-          isLoading: true
-        }
-      });
+      this.setState({isLoading: true});
     });
   };
 
@@ -123,11 +103,7 @@ class App extends Component<{}, IApp> {
       return item;
     });
 
-    this.setState(() => {
-      return {
-        items: newItems
-      }
-    })
+    this.setState( {items: newItems})
   };
 
   onAddNewTask = (id: string, obj: TaskType) => {
@@ -142,7 +118,9 @@ class App extends Component<{}, IApp> {
     const activeItem = this.state.items.find((item:ItemType) => item.id === id);
 
     axios.patch(`http://localhost:3001/items/${id}`, activeItem)
-    .catch(() => alert('Произошла ошибка!'));
+    .catch(() => {
+      alert('Произошла ошибка!')
+    });
 
     this.setState({items: newList});
   };
@@ -156,7 +134,7 @@ class App extends Component<{}, IApp> {
           <Title/>
 
           <List
-            clickRemoveHandler={this.removeTask}
+            clickRemoveHandler={this.onRemoveTask}
             items={items}
           />
 

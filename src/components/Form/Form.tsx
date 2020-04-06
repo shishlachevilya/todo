@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import Radio from '../Radio';
 import axios from 'axios';
-
+import Radio from '../Radio';
 import './form.scss';
 
 interface IForm {

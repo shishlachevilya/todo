@@ -1,49 +1,44 @@
 import React from 'react';
-import Icon from '../Icon';
-import { ItemType } from '../App/App';
 import {NavLink} from 'react-router-dom';
-import classNames from 'classnames';
-
+import {ItemType} from '../App/App';
+import Icon from '../Icon';
 import './list.scss';
 
 interface IList {
   items: Array<ItemType>
-  activeItem?: ItemType
   clickRemoveHandler: (path: string) => void
 }
 
-const List: React.FC<IList> = ({
-                                 items,
-                                 activeItem,
-                                 clickRemoveHandler
-                               }) => {
+const List: React.FC<IList> = ({items, clickRemoveHandler}) => {
+
   return (
     <ul className='list'>
-      { items.map((item, index) => {
-        const { id, title, icon: { path, color } } = item;
+      {items.map((item, index) => {
+        const {id, title, icon: {path, color}} = item;
+
         return (
           <li
-            id={ id }
-            key={ index }
-            className={ classNames('list__item item', { active: item.active ? item.active : activeItem && activeItem.id === id }) }
+            id={id}
+            key={index}
+            className='list__item item'
           >
             <NavLink to={`/task/${id}`} className='item__link' activeClassName='active'>
               <div className='item__icon'>
                 <Icon
                   viewBox='0 0 70 70'
-                  color={ color }
-                  path={ path }
+                  color={color}
+                  path={path}
                 />
               </div>
               <h4 className='item__title'>
-                { title }
+                {title}
 
-                <span>{ item.tasks && `(${ item.tasks.length })` }</span>
+                <span>{item.tasks && `(${item.tasks.length})`}</span>
               </h4>
 
               <button
                 className='item__close'
-                onClick={ () => clickRemoveHandler ? clickRemoveHandler(id) : null }
+                onClick={() => clickRemoveHandler(id)}
               >
                 <Icon
                   viewBox='0 0 15 15'
@@ -53,7 +48,7 @@ const List: React.FC<IList> = ({
             </NavLink>
           </li>
         )
-      }) }
+      })}
     </ul>
   );
 };

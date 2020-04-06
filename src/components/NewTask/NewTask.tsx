@@ -1,9 +1,8 @@
 import React, {ChangeEvent, useState} from 'react';
-import Icon from '../Icon';
-import {ItemType, TaskType} from '../App/App';
-import './new-task.scss';
-
 import shortId from 'shortid';
+import {ItemType, TaskType} from '../App/App';
+import Icon from '../Icon';
+import './new-task.scss';
 
 interface INewTask {
   task: ItemType

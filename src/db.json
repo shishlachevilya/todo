@@ -82,7 +82,14 @@
         "color": "#C9D1D3"
       },
       "title": "Личное",
-      "tasks": []
+      "tasks": [
+        {
+          "id": "3NyWTEoCn",
+          "itemId": "46Juzcyx",
+          "text": "jhj",
+          "completed": false
+        }
+      ]
     }
   ],
   "colors": [

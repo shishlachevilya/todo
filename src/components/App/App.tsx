@@ -163,7 +163,6 @@ class App extends Component<{}, IApp> {
 
   render() {
     const { items, isVisible, isLoading, currentTask } = this.state;
-    console.log(currentTask);
 
     return (
       <div className='app'>
@@ -202,7 +201,7 @@ class App extends Component<{}, IApp> {
             }) }
           </Route>
 
-          <Route exact path='/task/:id'>
+          <Route path='/task/:id'>
             { items && currentTask && (
               <Tasks
                 onChangeTitle={ this.onChangeTitle }
@@ -211,16 +210,6 @@ class App extends Component<{}, IApp> {
               />
             ) }
           </Route>
-          {/*{currentTask ?*/ }
-          {/*  <Tasks*/ }
-          {/*    onChangeTitle={this.onChangeTitle}*/ }
-          {/*    onToggleShowForm={this.onToggleShowForm}*/ }
-          {/*    onAddNewTask={this.onAddNewTask}*/ }
-          {/*    task={currentTask}*/ }
-          {/*    isShow={isShow}*/ }
-          {/*  />*/ }
-          {/*  :*/ }
-          {/*  'выбери задачу'}*/ }
         </div>
       </div>
     );

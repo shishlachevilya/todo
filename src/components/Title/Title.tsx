@@ -1,8 +1,6 @@
 import React from 'react';
 import Icon from '../Icon';
-import { useHistory } from 'react-router-dom';
-import classNames from 'classnames';
-
+import {NavLink} from 'react-router-dom';
 import './title.scss';
 
 interface ITitle {
@@ -10,15 +8,8 @@ interface ITitle {
 }
 
 const Title: React.FC<ITitle> = () => {
-
-  const history = useHistory();
-  const {location: {pathname: path}} = history;
-
   return (
-    <div
-      className={classNames('title', {active: path === '/'})}
-      onClick={() =>  history.push('/')}
-    >
+    <NavLink exact to='/' className='title' activeClassName='active'>
       <div className='title__icon'>
         <Icon
           viewBox='0 0 70 70'
@@ -27,7 +18,7 @@ const Title: React.FC<ITitle> = () => {
         />
       </div>
       <h4 className='title__text'>Все задачи</h4>
-    </div>
+    </NavLink>
   );
 };
 

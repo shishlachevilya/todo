@@ -30,6 +30,7 @@ const NewTask: React.FC<INewTask> = ({task, onAddNewTask}) => {
 
     onAddNewTask(task.id, newTask);
     setInputValue('');
+    setIsShow(!isShow);
   };
 
   return (
@@ -46,7 +47,7 @@ const NewTask: React.FC<INewTask> = ({task, onAddNewTask}) => {
               autoFocus={true}
             />
 
-            <button className='form__btn form__btn_half' type='submit'>Добавить задачу</button>
+            <button className='form__btn form__btn_half' type='submit'>Добавить</button>
             <button onClick={() => setIsShow(!isShow)} className='form__btn form__btn_close'>Закрыть</button>
           </form>
         ) :

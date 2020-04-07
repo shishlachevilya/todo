@@ -1,4 +1,19 @@
 .checkbox {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: rgba(0,0,0, .09);
+
+    span {
+      border-color: #bdbdbd;
+      background: #bdbdbd url('../../assets/check.svg') no-repeat center;
+      background-size: 14px;
+    }
+  }
+
   input[type='checkbox'] {
     position: absolute;
     clip: rect(0 0 0 0);
@@ -10,16 +25,13 @@
   label {
     display: flex;
     align-items: center;
-    font-size: 18px;
+    flex-grow: 1;
+    padding: 10px;
     color: #000;
+    font-size: 18px;
     font-family: 'Lato', sans-serif;
+    border-radius: 6px;
     cursor: pointer;
-
-    &:hover span {
-      border-color: #bdbdbd;
-      background: #bdbdbd url('../../assets/check.svg') no-repeat center;
-      background-size: 14px;
-    }
   }
 
   span {

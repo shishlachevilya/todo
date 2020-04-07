@@ -6,10 +6,10 @@ import './list.scss';
 
 interface IList {
   items: Array<ItemType>
-  clickRemoveHandler: (path: string) => void
+  onRemoveCategory: (path: string) => void
 }
 
-const List: React.FC<IList> = ({items, clickRemoveHandler}) => {
+const List: React.FC<IList> = ({items, onRemoveCategory}) => {
 
   return (
     <ul className='list'>
@@ -38,7 +38,7 @@ const List: React.FC<IList> = ({items, clickRemoveHandler}) => {
 
               <button
                 className='item__close'
-                onClick={() => clickRemoveHandler(id)}
+                onClick={() => onRemoveCategory(id)}
               >
                 <Icon
                   viewBox='0 0 15 15'

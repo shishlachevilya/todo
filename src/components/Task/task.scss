@@ -1,19 +1,27 @@
+.task-wrap {
+
+}
+
 .task {
   &:not(:last-child) {
     margin: 0 0 50px;
+  }
+  
+  &__link {
+    text-decoration: none;
+
+    h2 {
+      margin: 0 20px 0 0;
+      font-size: 50px;
+      font-family: inherit;
+      font-weight: 700;
+    }
   }
 
   &__title {
     display: flex;
     align-items: flex-end;
     margin: 0 0 50px;
-
-    h1 {
-      margin: 0 20px 0 0;
-      font-size: 50px;
-      font-family: inherit;
-      font-weight: 700;
-    }
   }
 
   &__edit {
@@ -46,7 +54,7 @@
       list-style: none;
 
       &:not(:last-child) {
-        margin-bottom: 20px;
+        margin-bottom: 10px;
       }
     }
   }

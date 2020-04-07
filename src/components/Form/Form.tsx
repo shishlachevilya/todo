@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import axios from 'axios';
 import Radio from '../Radio';
 import './form.scss';
@@ -8,16 +8,16 @@ interface IForm {
   isLoading: boolean
 }
 
-const Form: React.FC<IForm> = ({ onSubmitHandler, isLoading }) => {
-  const [ fieldValue, setFieldValue ] = useState('');
-  const [ colorValue, setColorValue ] = useState('');
-  const [ colors, setColors ] = useState([]);
+const Form: React.FC<IForm> = ({onSubmitHandler, isLoading}) => {
+  const [fieldValue, setFieldValue] = useState('');
+  const [colorValue, setColorValue] = useState('');
+  const [colors, setColors] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:3001/colors')
-      .then(res => {
-        setColors(res.data);
-      });
+    .then(res => {
+      setColors(res.data);
+    });
   }, []);
 
   const submitHandler = (e: any) => {
@@ -40,36 +40,36 @@ const Form: React.FC<IForm> = ({ onSubmitHandler, isLoading }) => {
 
   return (
     <form
-      onSubmit={ submitHandler }
+      onSubmit={submitHandler}
       className='form'>
       <input
         className='form__field'
         type='text'
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setFieldValue(e.target.value) }
-        value={ fieldValue }
-        placeholder='Название задачи'/>
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setFieldValue(e.target.value)}
+        value={fieldValue}
+        placeholder='Название категории'/>
 
       <div className='form__group'>
-        { colors.map((item: { id: string, color: string, isChecked: boolean }) => {
-          const { id, color, isChecked } = item;
+        {colors.map((item: { id: string, color: string, isChecked: boolean }) => {
+          const {id, color, isChecked} = item;
 
           return (
             <Radio
-              key={ id }
-              id={ id }
-              bgColor={ color }
-              handler={ setColorValue }
-              isChecked={ isChecked }
+              key={id}
+              id={id}
+              bgColor={color}
+              handler={setColorValue}
+              isChecked={isChecked}
             />
           )
-        }) }
+        })}
       </div>
 
       <button
         className='form__btn'
         type='submit'
       >
-        { isLoading ? 'Добавить задачу' : 'Добавление...' }
+        {isLoading ? 'Добавить' : 'Добавление...'}
       </button>
     </form>
   );

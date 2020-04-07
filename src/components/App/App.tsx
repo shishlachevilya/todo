@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import axios from 'axios';
 import List from '../List';
-import Tasks from '../Tasks';
+import Task from '../Task';
 import Popup from '../Popup';
 import Title from '../Title';
 import AddTask from '../AddTask';
@@ -54,12 +54,83 @@ class App extends Component<{}, IApp> {
     });
   }
 
-  onRemoveTask = (id: string) => {
+  onCompletedTask = (id: string, taskId: string, completed: boolean) => {
+    const filteredTasks = this.state.items.map((item: ItemType) => {
+      if (item.id === id) {
+        item.tasks.map((task) => {
+          if (task.id === taskId) {
+            task.completed = completed;
+          }
+          return task;
+        });
+      }
+      return item
+    });
+
+    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
+
+    axios.patch(`http://localhost:3001/items/${id}`, activeItem)
+    .catch(() => {
+      alert('Произошла ошибка!')
+    });
+
+    this.setState({items: filteredTasks});
+  };
+
+  onEditTask = (id: string, taskObj: { id: string, text: string }) => {
+    const newTaskText: string | null = window.prompt('Изменить название задачи', taskObj.text);
+
+    if (!newTaskText) return;
+
+    const filteredTasks = this.state.items.map((item: ItemType) => {
+      if (item.id === id) {
+        item.tasks.map((task) => {
+          if (task.id === taskObj.id) {
+            task.text = newTaskText;
+          }
+          return task;
+        });
+      }
+      return item
+    });
+
+    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
+
+    axios.patch(`http://localhost:3001/items/${id}`, activeItem)
+    .catch(() => {
+      alert('Произошла ошибка!')
+    });
+
+    this.setState({items: filteredTasks});
+  };
+
+  onRemoveTask = (taskId: string, activeCategoryId: string) => {
     if (window.confirm('Удалить задачу?')) {
+      const filteredTasks = this.state.items.map((item: ItemType) => {
+        if (item.id === activeCategoryId) {
+          item.tasks = item.tasks.filter((task) => task.id !== taskId);
+        }
+
+        return item
+      });
+
+      const activeItem = this.state.items.find((item: ItemType) => item.id === activeCategoryId);
+
+      axios.patch(`http://localhost:3001/items/${activeCategoryId}`, activeItem)
+      .catch(() => {
+        alert('Произошла ошибка!')
+      });
+
+      this.setState({items: filteredTasks});
+    }
+  };
+
+  onRemoveCategory = (id: string) => {
+    if (window.confirm('Удалить категорию?')) {
       axios.delete(`http://localhost:3001/items/${id}`)
       .then(() => {
-        const filteredItems = this.state.items.filter((item: ItemType) => item.id !== id);
-        this.setState({items: filteredItems})
+        const filteredCategories = this.state.items.filter((item: ItemType) => item.id !== id);
+        this.setState({items: filteredCategories})
       })
     }
   };
@@ -85,7 +156,7 @@ class App extends Component<{}, IApp> {
         data
       ];
 
-      this.setState( {items: newItems});
+      this.setState({items: newItems});
     })
     .catch(() => {
       alert('Произошла ошибка');
@@ -103,7 +174,7 @@ class App extends Component<{}, IApp> {
       return item;
     });
 
-    this.setState( {items: newItems})
+    this.setState({items: newItems})
   };
 
   onAddNewTask = (id: string, obj: TaskType) => {
@@ -115,7 +186,7 @@ class App extends Component<{}, IApp> {
       return item;
     });
 
-    const activeItem = this.state.items.find((item:ItemType) => item.id === id);
+    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
 
     axios.patch(`http://localhost:3001/items/${id}`, activeItem)
     .catch(() => {
@@ -134,7 +205,7 @@ class App extends Component<{}, IApp> {
           <Title/>
 
           <List
-            clickRemoveHandler={this.onRemoveTask}
+            onRemoveCategory={this.onRemoveCategory}
             items={items}
           />
 
@@ -152,20 +223,26 @@ class App extends Component<{}, IApp> {
         <div className='app__content'>
           <Switch>
             <Route exact path='/' render={({match}) =>
-              <Tasks
+              <Task
                 match={match}
                 onChangeTitle={this.onChangeTitle}
                 onAddNewTask={this.onAddNewTask}
+                onEditTask={this.onEditTask}
+                onCompletedTask={this.onCompletedTask}
+                onRemoveTask={this.onRemoveTask}
                 items={items}
               />
             }>
             </Route>
 
             <Route exact path='/task/:id' render={({match}) =>
-              <Tasks
+              <Task
                 match={match}
                 onChangeTitle={this.onChangeTitle}
                 onAddNewTask={this.onAddNewTask}
+                onEditTask={this.onEditTask}
+                onRemoveTask={this.onRemoveTask}
+                onCompletedTask={this.onCompletedTask}
                 items={items}
               />
             }>

@@ -5,24 +5,33 @@ import Icon from '../Icon';
 import Checkbox from '../Checkbox';
 import NewTask from "../NewTask";
 import './task.scss';
+import {Link} from "react-router-dom";
 
 interface ITask {
   match: any
   items: Array<ItemType>
+  onCompletedTask: (id: string, taskId: string, completed: boolean) => void
+  onEditTask: (activeCategoryId: string, taskObj: {id: string, text: string}) => void
+  onRemoveTask: (taskId: string, activeCategoryId: string) => void
   onChangeTitle: (title: string, id: string) => void
   onAddNewTask: (id: string, obj: TaskType) => void
 }
 
-const Tasks: React.FC<ITask> = ({match, items, onChangeTitle, onAddNewTask}) => {
+const Task: React.FC<ITask> = ({match, items, onCompletedTask, onEditTask, onRemoveTask, onChangeTitle, onAddNewTask}) => {
 
   const data = match.params.id ? items.filter((item) => item.id === match.params.id) : items;
 
   const renderTasks = (tasks: Array<TaskType>) => {
-    return tasks.map(({text, completed}, index) => {
+    return tasks.map(({id, text, itemId, completed}, index) => {
       return (
         <li key={index} className="task-list__item">
           <Checkbox
+            id={id}
             text={text}
+            activeCategoryId={itemId}
+            onCompletedTask={onCompletedTask}
+            onRemoveTask={onRemoveTask}
+            onEditTask={onEditTask}
             completed={completed}
           />
         </li>
@@ -42,14 +51,17 @@ const Tasks: React.FC<ITask> = ({match, items, onChangeTitle, onAddNewTask}) => 
   };
 
   return (
-    <div>
+    <div className='task-wrap'>
       {
         data.map((item) => {
           const {id, title, tasks, icon: {color}} = item;
           return (
             <div key={id} className='task'>
               <div className="task__title">
-                <h1 style={{color: color}}>{title}</h1>
+                <Link to={`/task/${id}`} className='task__link'>
+                  <h2 style={{color: color}}>{title}</h2>
+                </Link>
+
                 <button
                   onClick={() => setNewTitle(id, title)}
                   className='task__edit'
@@ -78,4 +90,4 @@ const Tasks: React.FC<ITask> = ({match, items, onChangeTitle, onAddNewTask}) => 
   );
 };
 
-export default Tasks;
+export default Task;

@@ -3,6 +3,7 @@ import shortId from 'shortid';
 import {ItemType, TaskType} from '../App/App';
 import Icon from '../Icon';
 import './new-task.scss';
+import Button from "../Button";
 
 interface INewTask {
   task: ItemType
@@ -47,8 +48,20 @@ const NewTask: React.FC<INewTask> = ({task, onAddNewTask}) => {
               autoFocus={true}
             />
 
-            <button className='form__btn form__btn_half' type='submit'>Добавить</button>
-            <button onClick={() => setIsShow(!isShow)} className='form__btn form__btn_close'>Закрыть</button>
+            <Button
+              type='submit'
+              className='button-add'
+            >
+              Добавить
+            </Button>
+
+            <Button
+              type='button'
+              onClick={() => setIsShow(!isShow)}
+              className='button-close'
+            >
+              Закрыть
+            </Button>
           </form>
         ) :
         (

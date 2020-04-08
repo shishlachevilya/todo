@@ -2,6 +2,7 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import axios from 'axios';
 import Radio from '../Radio';
 import './form.scss';
+import Button from '../Button';
 
 interface IForm {
   onSubmitHandler: (obj: { value: string, color: string }) => void
@@ -65,12 +66,12 @@ const Form: React.FC<IForm> = ({onSubmitHandler, isLoading}) => {
         })}
       </div>
 
-      <button
-        className='form__btn'
+      <Button
+        className='button-add'
         type='submit'
       >
         {isLoading ? 'Добавить' : 'Добавление...'}
-      </button>
+      </Button>
     </form>
   );
 };

@@ -1,0 +1,106 @@
+.button {
+  padding: 0;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.button-add {
+  display: inline-block;
+  width: 100%;
+  max-width: 300px;
+  height: 40px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #4dd599;
+
+  &:hover {
+    background-color: darken(#4dd599, 5%);
+  }
+
+  &:active {
+    background-color: darken(#4dd599, 10%);
+  }
+}
+
+.button-close {
+  display: inline-block;
+  width: 37%;
+  height: 40px;
+  margin-left: 14px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  background-color: #ccc;
+
+  &:hover {
+    background-color: darken(#ccc, 5%);
+  }
+
+  &:active {
+    background-color: darken(#ccc, 10%);
+  }
+}
+
+.button-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 0;
+
+  &_delete {
+    &:focus,
+    &:hover {
+      border-color: tomato;
+
+      svg {
+        fill: tomato;
+      }
+    }
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  &_edit {
+    &:focus,
+    &:hover {
+      border-color: #4DD599;
+
+      svg {
+        fill: #4DD599;
+      }
+    }
+
+    svg {
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  &_big {
+    width: 22px;
+    height: 22px;
+    opacity: 1;
+
+    svg {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.ml-5 {
+  margin-left: 5px;
+}

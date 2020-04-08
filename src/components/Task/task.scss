@@ -1,7 +1,3 @@
-.task-wrap {
-
-}
-
 .task {
   &:not(:last-child) {
     margin: 0 0 50px;
@@ -22,28 +18,6 @@
     display: flex;
     align-items: flex-end;
     margin: 0 0 50px;
-  }
-
-  &__edit {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    padding: 0;
-    width: 26px;
-    height: 26px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: transparent;
-    cursor: pointer;
-
-    &:hover {
-      border-color: #4DD599;
-
-      svg {
-        fill: #4DD599;
-      }
-    }
   }
 
   &-list {

@@ -40,7 +40,7 @@
           "id": "4",
           "itemId": "7oet_d9Z",
           "text": "Redux (redux-observable, redux-saga)",
-          "completed": false
+          "completed": true
         }
       ]
     },

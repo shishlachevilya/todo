@@ -1,8 +1,8 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import axios from 'axios';
 import Radio from '../Radio';
-import './form.scss';
 import Button from '../Button';
+import './form.scss';
 
 interface IForm {
   onSubmitHandler: (obj: { value: string, color: string }) => void

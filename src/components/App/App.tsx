@@ -55,7 +55,7 @@ class App extends Component<{}, IApp> {
   }
 
   onCompletedTask = (id: string, taskId: string, completed: boolean) => {
-    const filteredTasks = this.state.items.map((item: ItemType) => {
+    const filteredTasks: Array<ItemType> = this.state.items.map((item: ItemType) => {
       if (item.id === id) {
         item.tasks.map((task) => {
           if (task.id === taskId) {
@@ -67,7 +67,7 @@ class App extends Component<{}, IApp> {
       return item
     });
 
-    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
+    const activeItem: ItemType | undefined = this.state.items.find((item: ItemType) => item.id === id);
 
     axios.patch(`http://localhost:3001/items/${id}`, activeItem)
     .catch(() => {
@@ -82,7 +82,7 @@ class App extends Component<{}, IApp> {
 
     if (!newTaskText) return;
 
-    const filteredTasks = this.state.items.map((item: ItemType) => {
+    const filteredTasks: Array<ItemType> = this.state.items.map((item: ItemType) => {
       if (item.id === id) {
         item.tasks.map((task) => {
           if (task.id === taskObj.id) {
@@ -94,7 +94,7 @@ class App extends Component<{}, IApp> {
       return item
     });
 
-    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
+    const activeItem: ItemType | undefined = this.state.items.find((item: ItemType) => item.id === id);
 
     axios.patch(`http://localhost:3001/items/${id}`, activeItem)
     .catch(() => {
@@ -106,7 +106,7 @@ class App extends Component<{}, IApp> {
 
   onRemoveTask = (taskId: string, activeCategoryId: string) => {
     if (window.confirm('Удалить задачу?')) {
-      const filteredTasks = this.state.items.map((item: ItemType) => {
+      const filteredTasks: Array<ItemType> = this.state.items.map((item: ItemType) => {
         if (item.id === activeCategoryId) {
           item.tasks = item.tasks.filter((task) => task.id !== taskId);
         }
@@ -114,7 +114,7 @@ class App extends Component<{}, IApp> {
         return item
       });
 
-      const activeItem = this.state.items.find((item: ItemType) => item.id === activeCategoryId);
+      const activeItem: ItemType | undefined = this.state.items.find((item: ItemType) => item.id === activeCategoryId);
 
       axios.patch(`http://localhost:3001/items/${activeCategoryId}`, activeItem)
       .catch(() => {
@@ -129,7 +129,7 @@ class App extends Component<{}, IApp> {
     if (window.confirm('Удалить категорию?')) {
       axios.delete(`http://localhost:3001/items/${id}`)
       .then(() => {
-        const filteredCategories = this.state.items.filter((item: ItemType) => item.id !== id);
+        const filteredCategories: Array<ItemType> = this.state.items.filter((item: ItemType) => item.id !== id);
         this.setState({items: filteredCategories})
       })
     }
@@ -167,7 +167,7 @@ class App extends Component<{}, IApp> {
   };
 
   onChangeTitle = (title: string, itemId: string) => {
-    const newItems = this.state.items.filter((item: ItemType) => {
+    const newItems: Array<ItemType> = this.state.items.filter((item: ItemType) => {
       if (item.id === itemId) {
         item.title = title;
       }
@@ -178,7 +178,7 @@ class App extends Component<{}, IApp> {
   };
 
   onAddNewTask = (id: string, obj: TaskType) => {
-    const newList = this.state.items.map((item: ItemType) => {
+    const newList: Array<ItemType> = this.state.items.map((item: ItemType) => {
       if (item.id === obj.itemId) {
         item.tasks = [...item.tasks, obj];
       }
@@ -186,7 +186,7 @@ class App extends Component<{}, IApp> {
       return item;
     });
 
-    const activeItem = this.state.items.find((item: ItemType) => item.id === id);
+    const activeItem: ItemType | undefined = this.state.items.find((item: ItemType) => item.id === id);
 
     axios.patch(`http://localhost:3001/items/${id}`, activeItem)
     .catch(() => {

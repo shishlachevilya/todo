@@ -11,7 +11,7 @@ interface IForm {
 
 const Form: React.FC<IForm> = ({onSubmitHandler, isLoading}) => {
   const [fieldValue, setFieldValue] = useState('');
-  const [colorValue, setColorValue] = useState('');
+  const [colorValue, setColorValue] = useState('#c9d1d3');
   const [colors, setColors] = useState([]);
 
   useEffect(() => {
